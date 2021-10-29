@@ -1,0 +1,560 @@
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 1
+
+
+
+
+
+       MCS-51 Family Macro Assembler   A S E M - 5 1   V 1.3
+       =====================================================
+
+
+
+	Source File:	D:\Elektro\Kuliah\Smstr 5\Prak Sistem Mikroprosesor\UTS.A51
+	Object File:	D:\Elektro\Kuliah\Smstr 5\Prak Sistem Mikroprosesor\UTS.hex
+	List File:	D:\Elektro\Kuliah\Smstr 5\Prak Sistem Mikroprosesor\UTS.lst
+
+
+
+ Line  I  Addr  Code            Source
+
+    1:				$NOMOD51
+    2:				$INCLUDE (8051.MCU)
+    3: 1			;   8051 processor definition file
+    4: 1			;   ==============================
+    5: 1
+    6: 1	N	 80	P0	DATA	080H
+    7: 1	N	 81	SP	DATA	081H
+    8: 1	N	 82	DPL	DATA	082H
+    9: 1	N	 83	DPH	DATA	083H
+   10: 1	N	 87	PCON	DATA	087H
+   11: 1	N	 88	TCON	DATA	088H
+   12: 1	N	 89	TMOD	DATA	089H
+   13: 1	N	 8A	TL0	DATA	08AH
+   14: 1	N	 8B	TL1	DATA	08BH
+   15: 1	N	 8C	TH0	DATA	08CH
+   16: 1	N	 8D	TH1	DATA	08DH
+   17: 1	N	 90	P1	DATA	090H
+   18: 1	N	 98	SCON	DATA	098H
+   19: 1	N	 99	SBUF	DATA	099H
+   20: 1	N	 A0	P2	DATA	0A0H
+   21: 1	N	 A8	IE	DATA	0A8H
+   22: 1	N	 B0	P3	DATA	0B0H
+   23: 1	N	 B8	IP	DATA	0B8H
+   24: 1	N	 D0	PSW	DATA	0D0H
+   25: 1	N	 E0	ACC	DATA	0E0H
+   26: 1	N	 F0	B	DATA	0F0H
+   27: 1
+   28: 1	N	 88	IT0	BIT	088H
+   29: 1	N	 89	IE0	BIT	089H
+   30: 1	N	 8A	IT1	BIT	08AH
+   31: 1	N	 8B	IE1	BIT	08BH
+   32: 1	N	 8C	TR0	BIT	08CH
+   33: 1	N	 8D	TF0	BIT	08DH
+   34: 1	N	 8E	TR1	BIT	08EH
+   35: 1	N	 8F	TF1	BIT	08FH
+   36: 1	N	 98	RI	BIT	098H
+   37: 1	N	 99	TI	BIT	099H
+   38: 1	N	 9A	RB8	BIT	09AH
+   39: 1	N	 9B	TB8	BIT	09BH
+   40: 1	N	 9C	REN	BIT	09CH
+   41: 1	N	 9D	SM2	BIT	09DH
+   42: 1	N	 9E	SM1	BIT	09EH
+   43: 1	N	 9F	SM0	BIT	09FH
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 2
+
+
+
+ Line  I  Addr  Code            Source
+
+   44: 1	N	 A8	EX0	BIT	0A8H
+   45: 1	N	 A9	ET0	BIT	0A9H
+   46: 1	N	 AA	EX1	BIT	0AAH
+   47: 1	N	 AB	ET1	BIT	0ABH
+   48: 1	N	 AC	ES	BIT	0ACH
+   49: 1	N	 AF	EA	BIT	0AFH
+   50: 1	N	 B0	RXD	BIT	0B0H
+   51: 1	N	 B1	TXD	BIT	0B1H
+   52: 1	N	 B2	INT0	BIT	0B2H
+   53: 1	N	 B3	INT1	BIT	0B3H
+   54: 1	N	 B4	T0	BIT	0B4H
+   55: 1	N	 B5	T1	BIT	0B5H
+   56: 1	N	 B6	WR	BIT	0B6H
+   57: 1	N	 B7	RD	BIT	0B7H
+   58: 1	N	 B8	PX0	BIT	0B8H
+   59: 1	N	 B9	PT0	BIT	0B9H
+   60: 1	N	 BA	PX1	BIT	0BAH
+   61: 1	N	 BB	PT1	BIT	0BBH
+   62: 1	N	 BC	PS	BIT	0BCH
+   63: 1	N	 D0	P	BIT	0D0H
+   64: 1	N	 D2	OV	BIT	0D2H
+   65: 1	N	 D3	RS0	BIT	0D3H
+   66: 1	N	 D4	RS1	BIT	0D4H
+   67: 1	N	 D5	F0	BIT	0D5H
+   68: 1	N	 D6	AC	BIT	0D6H
+   69: 1	N	 D7	CY	BIT	0D7H
+   70: 1
+   71: 1	N      0000	RESET	CODE	000H
+   72: 1	N      0003	EXTI0	CODE	003H
+   73: 1	N      000B	TIMER0	CODE	00BH
+   74: 1	N      0013	EXTI1	CODE	013H
+   75: 1	N      001B	TIMER1	CODE	01BH
+   76: 1	N      0023	SINT	CODE	023H
+   77:				; ---------------------------------------------------------------------------
+   78:
+   79:
+   80:				; ---------------------------------------------------------------------------
+   81:		B      00B1	trig  EQU  P3.1   ;
+   82:		B      00B0	echo  EQU  P3.0   ;
+   83:		B      00A2	enable equ p2.2
+   84:		B      00A0	rs equ p2.0
+   85:		B      00A1	rw equ p2.1
+   86:		D      0090	LCD_dat equ p1
+   87:		N      0000	 ORG  0000
+   88:				;---------------------------------------------------------------------------
+   89:				; EQUATES & VARIABLE DEFINITIONS
+   90:				;---------------------------------------------------------------------------
+   91:
+   92:	  0000	D2 B0		setb echo
+   93:	  0002	C2 B1		clr trig
+   94:	  0004	75 89 02	mov tmod, #02h
+   95:	  0007	75 8C CA	mov th0, #202
+   96:	  000A	11 1A		 acall LCD_init
+   97:	  000C	31 8A		 acall delay_2s
+   98:	  000E	11 AB		acall LCD_clear
+   99:	  0010			loop1:
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 3
+
+
+
+ Line  I  Addr  Code            Source
+
+  100:	  0010	11 B7		        ACALL get_level
+  101:	  0012	11 D6		        ACALL CONVERT
+  102:	  0014	11 98		        acall cursr_home
+  103:	  0016	31 37				ACALL display
+  104:	  0018	80 F6		        SJMP Loop1
+  105:				; ------------------------------------------------------------------------------------
+  106:				; ------------------------------------------------------------------------------------
+  107:	  001A	90 00 30	LCD_init: mov dptr, #syntax
+  108:	  001D	C2 A0				clr rs
+  109:	  001F	C2 A1				clr rw
+  110:	  0021	E4		loop:	clr a
+  111:	  0022	93				movc a, @a+dptr
+  112:	  0023	60 10				jz LCD_logo
+  113:	  0025	D2 A2				setb enable
+  114:	  0027	F5 90				mov LCD_dat, a
+  115:	  0029	C2 A2				clr enable
+  116:	  002B	31 81				acall delay1ms
+  117:	  002D	A3				inc dptr
+  118:	  002E	80 F1				sjmp loop
+  119:
+  120:	  0030	38 0F 01 10	syntax: db 38h,0fh,01h,10h,00h
+	  0034	00
+  121:
+  122:	  0035	90 00 4B	LCD_logo: mov dptr, #syntax1
+  123:	  0038	D2 A0				setb rs
+  124:	  003A	C2 A1				clr rw
+  125:	  003C	E4		loop4:	clr a
+  126:	  003D	93				movc a, @a+dptr
+  127:	  003E	60 19				jz new_command
+  128:	  0040	D2 A2				setb enable
+  129:	  0042	F5 90				mov LCD_dat, a
+  130:	  0044	C2 A2				clr enable
+  131:	  0046	31 81				acall delay1ms
+  132:	  0048	A3				inc dptr
+  133:	  0049	80 F1				sjmp loop4
+  134:
+  135:	  004B	44 49 47 49	syntax1: db 'DIGITAL RULER',0
+	  004F	54 41 4C 20
+	  0053	52 55 4C 45
+	  0057	52 00
+  136:
+  137:	  0059	90 00 6F	new_command: mov dptr, #syntax2
+  138:	  005C	C2 A0				clr rs
+  139:	  005E	C2 A1				clr rw
+  140:	  0060	E4		loop5:	clr a
+  141:	  0061	93				movc a, @a+dptr
+  142:	  0062	60 10				jz LCD_logo_2
+  143:	  0064	D2 A2				setb enable
+  144:	  0066	F5 90				mov LCD_dat, a
+  145:	  0068	C2 A2				clr enable
+  146:	  006A	31 81				acall delay1ms
+  147:	  006C	A3				inc dptr
+  148:	  006D	80 F1				sjmp loop5
+  149:
+  150:	  006F	C0 14 14 14	syntax2: db 0c0h,14h,14h,14h,00h
+	  0073	00
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 4
+
+
+
+ Line  I  Addr  Code            Source
+
+  151:
+  152:
+  153:	  0074	90 00 8A	LCD_logo_2: mov dptr, #syntax3
+  154:	  0077	D2 A0				setb rs
+  155:	  0079	C2 A1				clr rw
+  156:	  007B	E4		loop6:	clr a
+  157:	  007C	93				movc a, @a+dptr
+  158:	  007D	60 18				jz return
+  159:	  007F	D2 A2				setb enable
+  160:	  0081	F5 90				mov LCD_dat, a
+  161:	  0083	C2 A2				clr enable
+  162:	  0085	31 81				acall delay1ms
+  163:	  0087	A3				inc dptr
+  164:	  0088	80 F1				sjmp loop6
+  165:
+  166:	  008A	62 79 20 46	syntax3: db "by FIQRI 047",0
+	  008E	49 51 52 49
+	  0092	20 30 34 37
+	  0096	00
+  167:
+  168:	  0097	22		return:ret
+  169:
+  170:	  0098			cursr_home:
+  171:	  0098	C2 A0		clr rs
+  172:	  009A	D2 A2		setb enable
+  173:	  009C	75 90 80	mov LCD_dat,#80h
+  174:	  009F	C2 A2		clr enable
+  175:	  00A1	31 74		acall delay10ms
+  176:	  00A3	D2 A2		setb enable
+  177:	  00A5	75 90 0C	mov LCD_dat,#0Ch
+  178:	  00A8	C2 A2		clr enable
+  179:	  00AA	22		ret
+  180:	  00AB			LCD_clear:
+  181:	  00AB	C2 A0		clr rs
+  182:	  00AD	D2 A2		setb enable
+  183:	  00AF	75 90 01	mov LCD_dat,#01h
+  184:	  00B2	C2 A2		clr enable
+  185:	  00B4	31 74		acall delay10ms
+  186:	  00B6	22		ret
+  187:
+  188:	  00B7			get_level:
+  189:	  00B7	E4					clr a
+  190:	  00B8	D2 B1					setb trig
+  191:	  00BA	11 D1					acall delay_10us
+  192:	  00BC	C2 B1					clr trig
+  193:	  00BE	30 B0 FD	wait5:		jnb echo, wait5
+  194:	  00C1	D2 8C					setb tr0
+  195:	  00C3	30 8D FD	wait6:		jnb tf0, wait6
+  196:	  00C6	04					inc A
+  197:	  00C7	C2 8D					clr tf0
+  198:	  00C9	60 CC					jz return
+  199:
+  200:	  00CB	20 B0 F5				jb echo, wait6
+  201:	  00CE	C2 8C					clr tr0
+  202:	  00D0	22					ret
+  203:
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 5
+
+
+
+ Line  I  Addr  Code            Source
+
+  204:
+  205:	  00D1			delay_10us:
+  206:	  00D1	7F 12				mov r7, #18
+  207:	  00D3	DF FE		stay:		djnz r7, stay
+  208:	  00D5	22				ret
+  209:
+  210:
+  211:
+  212:
+  213:
+  214:	  00D6			CONVERT:
+  215:	  00D6	75 F0 0A	        	MOV  B,#10
+  216:	  00D9	84		        	DIV  AB
+  217:	  00DA	85 F0 29	        	MOV  41,B    ; SAVE LOW(ONES) DIGIT IN 41 RAM ADDRESS
+  218:	  00DD	75 F0 0A	        	MOV  B,#10
+  219:	  00E0	84		        	DIV  AB
+  220:	  00E1	85 F0 2A	        	MOV  42,B    ; save tenth place digit in 42 RAM ADDRESS
+  221:	  00E4	F5 2B				MOV  43,A    ; SAVE HUNDREDTH PLACE DIGIT IN 43 RAM ADDRESS
+  222:	  00E6	12 00 FA			CALL LOKUP
+  223:	  00E9	F5 2B				MOV  43,A
+  224:	  00EB	E5 2A				MOV  A,42
+  225:	  00ED	12 00 FA			CALL LOKUP
+  226:	  00F0	F5 2A				MOV  42,A
+  227:	  00F2	E5 29				MOV  A,41
+  228:	  00F4	12 00 FA			CALL LOKUP
+  229:	  00F7	F5 29				MOV  41,A
+  230:	  00F9	22				RET
+  231:
+  232:
+  233:	  00FA			LOKUP:
+  234:	  00FA	B4 00 03	        CJNE A,#00H,ONE
+  235:	  00FD	74 30		        MOV     A,#'0'
+  236:	  00FF	22		        RET
+  237:	  0100	B4 01 03	ONE:    CJNE A,#01H,TWO
+  238:	  0103	74 31		        MOV     A,#'1'
+  239:	  0105	22		        RET
+  240:	  0106	B4 02 03	TWO:    CJNE A,#02H,THREE
+  241:	  0109	74 32		        MOV     A,#'2'
+  242:	  010B	22		        RET
+  243:	  010C	B4 03 03	THREE:  CJNE A,#03H,FOUR
+  244:	  010F	74 33		        MOV    A,#'3'
+  245:	  0111	22		        RET
+  246:	  0112	B4 04 03	FOUR:   CJNE A,#04H,FIVE
+  247:	  0115	74 34		        MOV     A,#'4'
+  248:	  0117	22		        RET
+  249:	  0118	B4 05 03	FIVE:   CJNE A,#05H,SIX
+  250:	  011B	74 35		        MOV     A,#'5'
+  251:	  011D	22		        RET
+  252:	  011E	B4 06 03	SIX:    CJNE A,#06H,SEVEN
+  253:	  0121	74 36		        MOV     A,#'6'
+  254:	  0123	22		        RET
+  255:	  0124	B4 07 03	SEVEN:  CJNE A,#07H,EIGHT
+  256:	  0127	74 37		        MOV     A,#'7'
+  257:	  0129	22		        RET
+  258:	  012A	B4 08 03	EIGHT:  CJNE A,#08H,NINE
+  259:	  012D	74 38		        MOV     A,#'8'
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 6
+
+
+
+ Line  I  Addr  Code            Source
+
+  260:	  012F	22		        RET
+  261:	  0130	B4 09 03	NINE:   CJNE A,#09H,TEN
+  262:	  0133	74 39		        MOV     A,#'9'
+  263:	  0135	22		        RET
+  264:	  0136			TEN:
+  265:	  0136	22		        RET
+  266:
+  267:
+  268:
+  269:
+  270:
+  271:
+  272:
+  273:	  0137			display:
+  274:	  0137	C2 A1		        clr rw
+  275:	  0139	D2 A0				setb rs
+  276:	  013B	31 81				acall delay1ms
+  277:
+  278:	  013D	D2 A2				SETB    enable
+  279:	  013F	75 90 20	    	MOV     LCD_dat,#' '
+  280:	  0142	C2 A2		        clr enable
+  281:	  0144	31 81				acall delay1ms
+  282:
+  283:	  0146	D2 A2				SETB    enable
+  284:	  0148	85 2B 90	    	MOV     LCD_dat,43
+  285:	  014B	C2 A2		        clr enable
+  286:	  014D	31 81				acall delay1ms
+  287:
+  288:	  014F	D2 A2				SETB    enable
+  289:	  0151	85 2A 90	     	MOV     LCD_dat,42
+  290:	  0154	C2 A2		        clr enable
+  291:	  0156	31 81				acall delay1ms
+  292:
+  293:	  0158	D2 A2				SETB    enable
+  294:	  015A	85 29 90	    	MOV     LCD_dat,41
+  295:	  015D	C2 A2		        clr enable
+  296:	  015F	31 81				acall delay1ms
+  297:
+  298:	  0161	D2 A2				SETB    enable
+  299:	  0163	75 90 63	        MOV     LCD_dat,#'c'
+  300:	  0166	C2 A2		        clr enable
+  301:	  0168	31 81				acall delay1ms
+  302:
+  303:	  016A	D2 A2				SETB    enable
+  304:	  016C	75 90 6D	        MOV     LCD_dat,#'m'
+  305:	  016F	C2 A2		        clr enable
+  306:	  0171	31 81				acall delay1ms
+  307:
+  308:	  0173	22		        RET
+  309:
+  310:
+  311:
+  312:
+  313:
+  314:
+  315:	  0174	7B 01		delay10ms: 	MOV   R3,#1
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 7
+
+
+
+ Line  I  Addr  Code            Source
+
+  316:	  0176	7A 01				MOV   R2,#1
+  317:	  0178	79 13		      		MOV   R1,#19
+  318:	  017A	D9 FE		TT1:  		DJNZ  R1,TT1
+  319:	  017C	DA FC		      		DJNZ  R2,TT1
+  320:	  017E	DB FA		      		DJNZ  R3,TT1
+  321:	  0180	22		      		RET
+  322:	  0181	7A 04		delay1ms: 	MOV   R2,#04
+  323:	  0183	79 12		      		MOV   R1,#18
+  324:	  0185	D9 FE		TT2:  		DJNZ  R1,TT2
+  325:	  0187	DA FC		      		DJNZ  R2,TT2
+  326:	  0189	22		      		RET
+  327:	  018A	7B 32		delay_2s:MOV   R3,#50
+  328:	  018C	7A 0A				MOV   R2,#10
+  329:	  018E	79 FA		      		MOV   R1,#250
+  330:	  0190	D9 E8		TT3:  		DJNZ  R1,TT1
+  331:	  0192	DA E6		      		DJNZ  R2,TT1
+  332:	  0194	DB FA		      		DJNZ  R3,TT3
+  333:	  0196	22		      		RET
+  334:
+  335:				      END
+
+
+
+
+
+                     register banks used:  ---
+
+                     no errors
+
+
+
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 8
+
+
+
+
+
+	       L I S T   O F   S Y M B O L S
+	       =============================
+
+
+SYMBOL				  TYPE     VALUE	LINE
+------------------------------------------------------------
+??ASEM_51			  NUMBER    8051
+??VERSION			  NUMBER    0130
+AC				  BIT	      D6	  68
+ACC				  DATA	      E0	  25
+B				  DATA	      F0	  26
+CONVERT				  CODE	    00D6	 214
+CURSR_HOME			  CODE	    0098	 170
+CY				  BIT	      D7	  69
+DELAY10MS			  CODE	    0174	 315
+DELAY1MS			  CODE	    0181	 322
+DELAY_10US			  CODE	    00D1	 205
+DELAY_2S			  CODE	    018A	 327
+DISPLAY				  CODE	    0137	 273
+DPH				  DATA	      83	   9
+DPL				  DATA	      82	   8
+EA				  BIT	      AF	  49
+ECHO				  NUMBER    00B0	  82
+EIGHT				  CODE	    012A	 258
+ENABLE				  NUMBER    00A2	  83
+ES				  BIT	      AC	  48
+ET0				  BIT	      A9	  45
+ET1				  BIT	      AB	  47
+EX0				  BIT	      A8	  44
+EX1				  BIT	      AA	  46
+EXTI0				  CODE	    0003	  72
+EXTI1				  CODE	    0013	  74
+F0				  BIT	      D5	  67
+FIVE				  CODE	    0118	 249
+FOUR				  CODE	    0112	 246
+GET_LEVEL			  CODE	    00B7	 188
+IE				  DATA	      A8	  21
+IE0				  BIT	      89	  29
+IE1				  BIT	      8B	  31
+INT0				  BIT	      B2	  52
+INT1				  BIT	      B3	  53
+IP				  DATA	      B8	  23
+IT0				  BIT	      88	  28
+IT1				  BIT	      8A	  30
+LCD_CLEAR			  CODE	    00AB	 180
+LCD_DAT				  NUMBER    0090	  86
+LCD_INIT			  CODE	    001A	 107
+LCD_LOGO			  CODE	    0035	 122
+LCD_LOGO_2			  CODE	    0074	 153
+LOKUP				  CODE	    00FA	 233
+LOOP				  CODE	    0021	 110
+LOOP1				  CODE	    0010	  99
+LOOP4				  CODE	    003C	 125
+LOOP5				  CODE	    0060	 140
+LOOP6				  CODE	    007B	 156
+NEW_COMMAND			  CODE	    0059	 137
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 9
+
+
+
+SYMBOL				  TYPE     VALUE	LINE
+------------------------------------------------------------
+NINE				  CODE	    0130	 261
+ONE				  CODE	    0100	 237
+OV				  BIT	      D2	  64
+P				  BIT	      D0	  63
+P0				  DATA	      80	   6
+P1				  DATA	      90	  17
+P2				  DATA	      A0	  20
+P3				  DATA	      B0	  22
+PCON				  DATA	      87	  10
+PS				  BIT	      BC	  62
+PSW				  DATA	      D0	  24
+PT0				  BIT	      B9	  59
+PT1				  BIT	      BB	  61
+PX0				  BIT	      B8	  58
+PX1				  BIT	      BA	  60
+RB8				  BIT	      9A	  38
+RD				  BIT	      B7	  57
+REN				  BIT	      9C	  40
+RESET				  CODE	    0000	  71
+RETURN				  CODE	    0097	 168
+RI				  BIT	      98	  36
+RS				  NUMBER    00A0	  84
+RS0				  BIT	      D3	  65
+RS1				  BIT	      D4	  66
+RW				  NUMBER    00A1	  85
+RXD				  BIT	      B0	  50
+SBUF				  DATA	      99	  19
+SCON				  DATA	      98	  18
+SEVEN				  CODE	    0124	 255
+SINT				  CODE	    0023	  76
+SIX				  CODE	    011E	 252
+SM0				  BIT	      9F	  43
+SM1				  BIT	      9E	  42
+SM2				  BIT	      9D	  41
+SP				  DATA	      81	   7
+STAY				  CODE	    00D3	 207
+SYNTAX				  CODE	    0030	 120
+SYNTAX1				  CODE	    004B	 135
+SYNTAX2				  CODE	    006F	 150
+SYNTAX3				  CODE	    008A	 166
+T0				  BIT	      B4	  54
+T1				  BIT	      B5	  55
+TB8				  BIT	      9B	  39
+TCON				  DATA	      88	  11
+TEN				  CODE	    0136	 264
+TF0				  BIT	      8D	  33
+TF1				  BIT	      8F	  35
+TH0				  DATA	      8C	  15
+TH1				  DATA	      8D	  16
+THREE				  CODE	    010C	 243
+TI				  BIT	      99	  37
+TIMER0				  CODE	    000B	  73
+TIMER1				  CODE	    001B	  75
+TL0				  DATA	      8A	  13
+TL1				  DATA	      8B	  14
+TMOD				  DATA	      89	  12
+
+ASEM-51 V1.3                                        Copyright (c) 2002 by W.W. Heinz                                         PAGE 10
+
+
+
+SYMBOL				  TYPE     VALUE	LINE
+------------------------------------------------------------
+TR0				  BIT	      8C	  32
+TR1				  BIT	      8E	  34
+TRIG				  NUMBER    00B1	  81
+TT1				  CODE	    017A	 318
+TT2				  CODE	    0185	 324
+TT3				  CODE	    0190	 330
+TWO				  CODE	    0106	 240
+TXD				  BIT	      B1	  51
+WAIT5				  CODE	    00BE	 193
+WAIT6				  CODE	    00C3	 195
+WR				  BIT	      B6	  56
